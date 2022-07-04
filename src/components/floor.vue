@@ -2,6 +2,7 @@
     <div class="floor">
         <mine/>
         <btnLift/>
+        <div class="numberFloor">5</div>
     </div>
 </template>
 
@@ -19,9 +20,16 @@ export default {
 <style>
 
 .floor {
-    width: 50px;
+    width: 100px;
     height: 50px;
     min-width: 50px;
     min-height: 50px;
+}
+
+.numberFloor {
+    display: inline-block;
+    position: relative;
+    bottom: 10px;
+    left: -10px;
 }
 </style>

@@ -11,8 +11,9 @@ export default {
 <style>
 
 .mine {
-    width: 50px;
-    height: 50px;
+    display: inline-block;
+    min-width: 50px;
+    min-height: 50px;
     border-left: 4px solid red;
     border-right: 4px solid red;
 }

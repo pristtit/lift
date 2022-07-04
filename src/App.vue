@@ -1,11 +1,15 @@
 <template>
-<div v-for="floor in floors" class="app">
-  <floor/>
+<div class="deepMine">
+  <div v-for="floor in floors" :key="floor" class="app">
+    <floor/>
+  </div>
+  <cabin/>
 </div>
 </template>
 
 <script>
 import floor from "@/components/floor"
+import cabin from '@/components/cabin.vue'
 export default {
   data() {
     return {
@@ -14,6 +18,7 @@ export default {
   },
   components: {
     floor,
+    cabin,
   }
 }
 </script>
@@ -26,7 +31,8 @@ export default {
 	border: 0;
 }
 
-.app {
+.deepMine {
+  display: inline-block;
   padding-left: 10px
 }
 </style>

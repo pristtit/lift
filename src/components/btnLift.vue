@@ -11,7 +11,9 @@ export default {
 <style>
 
 .btnLift {
-    width: 10px;
-    height: 10px;
+    display: inline-block;
+    position: relative;
+    bottom: 40px;
+    left: 5px;
 }
 </style>
