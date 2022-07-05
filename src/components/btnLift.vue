@@ -1,9 +1,14 @@
 <template>
-    <butten>ку</butten>
+    <butten @click="pushListApp">жми</butten>
 </template>
 
 <script>
 export default {
+    methods: {
+        pushListApp() {
+            this.$emit('create')
+        }
+    }
     
 }
 </script>
