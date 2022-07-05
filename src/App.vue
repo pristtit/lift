@@ -1,14 +1,14 @@
 <template>
 <div class="working-window-mine">
-  <div class="column" v-for="column of columns" :key="column">
+  <div class="column" v-for="column of columns" :key="Date.now()">
       <floor 
       v-for="floor of floors" 
       :floor="floor"
       :column="column"
-      :key="floor"
+      :key="Date.now()"
       @create="getList"
       />
-      <cabin/>
+      <cabin :class="{ active: isActive }"/>
   </div>
 </div>
 </template>
@@ -16,14 +16,17 @@
 <script>
 import floor from "@/components/floor"
 import cabin from '@/components/cabin.vue'
+
 export default {
+
   mounted() {
     let arr = [];
     for (let a = 0; a < this.columns; a++) {
-      arr.push([1]);
+      arr.push({floorNumber: [1], freeState: true});
     }
     this.arr = arr;
   },
+
   data() {
     return {
       floors: 5,
@@ -31,14 +34,27 @@ export default {
       arr: null,
     }
   },
+
   components: {
     floor,
     cabin,
   },
+
   methods: {
     getList(floor, column) {
-      this.arr[column-1].push(floor);
-      this.arr[column-1].shift();
+      let listDistance = this.arr.map(function(item, index) { return {freeState: item.freeState, id: index, distance: Math.abs(floor - item.floorNumber)}});
+      listDistance.sort(function(a, b) { return a.distance - b.distance; });
+      let minNumber = listDistance.find(item => item.freeState);
+      console.log(listDistance);
+      if (minNumber) {
+        this.arr[minNumber.id].floorNumber.push(floor);
+        this.arr[minNumber.id].floorNumber.shift();
+        this.arr[minNumber.id].freeState = false;
+      } else {
+        this.arr[listDistance[0].id].floorNumber.push(floor);
+        this.arr[listDistance[0].id].floorNumber.shift();
+        this.arr[listDistance[0].id].freeState = false;
+      }  
       console.log(this.arr);
     }
   }
