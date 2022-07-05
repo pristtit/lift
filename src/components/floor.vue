@@ -1,8 +1,10 @@
 <template>
-    <div class="floor">
+    <div class="column__floor">
         <mine/>
-        <btnLift/>
-        <div class="numberFloor">5</div>
+        <div class="column__floor-sidebar">
+            <btnLift class="column__btn-floor column__btn-floor_display "/>
+            <div class="column__number-floor">5</div>
+        </div>
     </div>
 </template>
 
@@ -19,17 +21,19 @@ export default {
 
 <style>
 
-.floor {
-    width: 100px;
-    height: 50px;
-    min-width: 50px;
-    min-height: 50px;
+.column__floor {
+    display: flex;
+
 }
 
-.numberFloor {
-    display: inline-block;
-    position: relative;
-    bottom: 10px;
-    left: -10px;
+.column__number-floor {
+    display: block;
+    width: 20px;
 }
+
+.column__btn-floor_display {
+    display: block;
+    width: 20px;
+}
+
 </style>

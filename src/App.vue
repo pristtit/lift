@@ -1,9 +1,9 @@
 <template>
-<div class="deepMine">
-  <div v-for="floor in floors" :key="floor" class="app">
-    <floor/>
+<div class="working-window-mine">
+  <div class="column" v-for="column of columns" :key="column">
+      <floor v-for="floor of floors" :key="floor"/>
+      <cabin/>
   </div>
-  <cabin/>
 </div>
 </template>
 
@@ -13,7 +13,8 @@ import cabin from '@/components/cabin.vue'
 export default {
   data() {
     return {
-      floors: [1,2,3],
+      floors: 5,
+      columns: 2,
     }
   },
   components: {
@@ -31,8 +32,13 @@ export default {
 	border: 0;
 }
 
-.deepMine {
-  display: inline-block;
-  padding-left: 10px
+.working-window-mine {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: left;
+  align-items: flex-end;
+  padding: 0 5% 0 5%;
 }
+
 </style>
