@@ -4,11 +4,13 @@
       <floor 
       v-for="floor of floors" 
       :floor="floor"
+      :floors="floors"
       :column="column"
       :key="floor"
       @create="getList"
       />
       <cabin 
+      :startParam="startParam"
       :chek="chek" 
       :column="column"
       :arr="arr"
@@ -37,6 +39,7 @@ export default {
       columns: 2,
       arr: null,
       chek: null,
+      startParam: true,
     }
   },
 
@@ -51,19 +54,17 @@ export default {
       listDistance.sort(function(a, b) { return a.distance - b.distance; });
       let minNumber = listDistance.find(item => item.freeState);
       if (minNumber) {
-        this.arr[minNumber.id].floorNumber.push(floor);
         this.arr[minNumber.id].floorNumber.shift();
+        this.arr[minNumber.id].floorNumber.push(floor);
         this.arr[minNumber.id].freeState = false;
         this.chek = minNumber.id;
-        // console.log(this.chek);
-        // console.log(this.arr);
+        this.startParam = !this.startParam;
       } else {
-        this.arr[listDistance[0].id].floorNumber.push(floor);
         this.arr[listDistance[0].id].floorNumber.shift();
+        this.arr[listDistance[0].id].floorNumber.push(floor);
         this.arr[listDistance[0].id].freeState = false;
         this.chek = listDistance[0].id;
-        // console.log(this.chek);
-        // console.log(this.arr);
+        this.startParam = !this.startParam;
       }  
     }
   }

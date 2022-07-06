@@ -1,5 +1,5 @@
 <template>
-    <div class="column__cabin column__cabin_size">{{ go }}</div>
+    <div class="column__cabin column__cabin_size"></div>
 </template>
 
 <script>
@@ -13,25 +13,38 @@ export default {
         },
         arr: {
             type: Array,
+        },
+        startParam: {
+            type: Boolean,
         }
     },
     data() {
         return {
             x: 50,
-            floor: Math.abs(Math.floor(this.x / 50) - this.arr[column - 1].floorNumber[0]),
+            t: null,
         }
     },
-    computed: {
-        go() {
+    watch: {
+        startParam() {
             try {
                 if (this.column === this.chek + 1){
-                    this.$el.style.background = 'red';
-                    let start = Date.now();
+                    console.log('iter');
+                    let h = 0;
+                    let deltah = Math.round(this.x / 50 - this.arr[this.column - 1].floorNumber[0]);
+                    console.log(deltah);
                     let timer = setInterval(function() {
-                        this.x += 5;
-                        let timePassed = Date.now() - start;
-                        this.$el.style.bottom = String(x) + 'px';
-                        if (x > 50) clearInterval(timer);
+                        this.$el.style.bottom = String(this.x + h) + 'px';
+                        if (Math.abs(h) >= Math.abs(deltah) * 50) {
+                            this.x += h;
+                            console.log(this.x); 
+                            clearInterval(timer);
+                        } else {
+                            if (deltah > 0) {
+                                h -= 5;
+                            } else {
+                                h += 5;
+                            }
+                        }
                     }.bind(this), 10);
                 }
             } catch(err) { console.log(err) }

@@ -6,7 +6,7 @@
             class="column__btn-floor column__btn-floor_display "
             @create="pushListApp"
             />
-            <div class="column__number-floor">{{ floor }}</div>
+            <div class="column__number-floor">{{ 6 - floor }}</div>
         </div>
     </div>
 </template>
@@ -24,6 +24,9 @@ export default {
         floor: {
             type: Number,
         },
+        floors: {
+            type: Number,
+        },
         column: {
             type: Number,
         }
@@ -34,7 +37,7 @@ export default {
     },
     methods: {
         pushListApp() {
-            this.$emit('create', this.floor, this.column)
+            this.$emit('create', this.floors + 1 - this.floor, this.column)
         }
     }
 }
