@@ -29,28 +29,34 @@ export default {
             try {
                 console.log(this.arr[this.column - 1].floorNumber);
                 if (this.column === this.chek + 1 && this.arr[this.column - 1].isActive){
-                    this.arr[this.column - 1].isActive = false;
-                    console.log(this.arr[0].isActive);
-                    let h = 0;
-                    let deltah = Math.round(this.x / 50 - this.arr[this.column - 1].floorNumber[1]);
-                    let timer = setInterval(() => {
-                        this.$el.style.bottom = String(this.x + h) + 'px';
-                        if (Math.abs(h) >= Math.abs(deltah) * 50) {
-                            this.x += h;
-                            this.isRelaxation = true;
-                            setTimeout(() => {
-                                this.isRelaxation = false;
-                                this.$emit('cabineActive', this.column);
-                            }, 3000);
-                            clearInterval(timer);
-                        } else {
-                            if (deltah > 0) {
-                                h -= 5;
+
+                    function gj() {
+                        this.arr[this.column - 1].isActive = false;
+                        console.log(this.arr[0].isActive);
+                        let h = 0;
+                        let deltah = Math.round(this.x / 50 - this.arr[this.column - 1].floorNumber[1]);
+
+                        let timer = setInterval(() => {
+                            this.$el.style.bottom = String(this.x + h) + 'px';
+                            if (Math.abs(h) >= Math.abs(deltah) * 50) {
+                                this.x += h;
+                                this.isRelaxation = true;
+                                setTimeout(() => {
+                                    this.isRelaxation = false;
+                                    this.$emit('cabineActive', this.column);
+                                }, 3000);
+                                clearInterval(timer);
                             } else {
-                                h += 5;
+                                if (deltah > 0) {
+                                    h -= 5;
+                                } else {
+                                    h += 5;
+                                }
                             }
-                        }
-                    }, 10);
+                        }, 10);
+                    }
+                    gj();
+                    if (this.arr[this.column - 1].floorNumber.length > 1) {}
                 }
             } catch(err) { console.log(err) }
         }
