@@ -6,7 +6,7 @@
             class="column__btn-floor column__btn-floor_display "
             @create="pushListApp"
             />
-            <div class="column__number-floor">{{ 6 - floor }}</div>
+            <div class="column__number-floor">{{ floors + 1 - floor }}</div>
         </div>
     </div>
 </template>
@@ -14,6 +14,7 @@
 <script>
 import mine from "@/components/mine"
 import btnLift from "@/components/btnLift"
+
 export default {
     data() {
         return {

@@ -1,5 +1,5 @@
 <template>
-    <div class="column__cabin column__cabin_size"></div>
+    <div :class="{ relaxation: isRelaxation }" class="column__cabin column__cabin_size"></div>
 </template>
 
 <script>
@@ -21,22 +21,27 @@ export default {
     data() {
         return {
             x: 50,
-            t: null,
+            isRelaxation: false,
         }
     },
     watch: {
         startParam() {
             try {
-                if (this.column === this.chek + 1){
-                    console.log('iter');
+                console.log(this.arr[this.column - 1].floorNumber);
+                if (this.column === this.chek + 1 && this.arr[this.column - 1].isActive){
+                    this.arr[this.column - 1].isActive = false;
+                    console.log(this.arr[0].isActive);
                     let h = 0;
-                    let deltah = Math.round(this.x / 50 - this.arr[this.column - 1].floorNumber[0]);
-                    console.log(deltah);
-                    let timer = setInterval(function() {
+                    let deltah = Math.round(this.x / 50 - this.arr[this.column - 1].floorNumber[1]);
+                    let timer = setInterval(() => {
                         this.$el.style.bottom = String(this.x + h) + 'px';
                         if (Math.abs(h) >= Math.abs(deltah) * 50) {
                             this.x += h;
-                            console.log(this.x); 
+                            this.isRelaxation = true;
+                            setTimeout(() => {
+                                this.isRelaxation = false;
+                                this.$emit('cabineActive', this.column);
+                            }, 3000);
                             clearInterval(timer);
                         } else {
                             if (deltah > 0) {
@@ -45,7 +50,7 @@ export default {
                                 h += 5;
                             }
                         }
-                    }.bind(this), 10);
+                    }, 10);
                 }
             } catch(err) { console.log(err) }
         }
@@ -75,4 +80,13 @@ export default {
 .test {
     right: 30px;
 }
+
+.relaxation {
+    animation: flicker 1s infinite
+}
+
+@keyframes flicker {
+    from { opacity: 1; }
+    to { opacity: 0.3; }
+  }
 </style>

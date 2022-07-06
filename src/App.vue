@@ -14,6 +14,7 @@
       :chek="chek" 
       :column="column"
       :arr="arr"
+      @cabineActive="cabineActive"
       />
   </div>
 </div>
@@ -28,15 +29,15 @@ export default {
   mounted() {
     let arr = [];
     for (let a = 0; a < this.columns; a++) {
-      arr.push({floorNumber: [1], freeState: true});
+      arr.push({floorNumber: [1], isActive: true});
     }
     this.arr = arr;
   },
 
   data() {
     return {
-      floors: 5,
-      columns: 2,
+      floors: 7,
+      columns: 1,
       arr: null,
       chek: null,
       startParam: true,
@@ -50,23 +51,26 @@ export default {
 
   methods: {
     getList(floor, column) {
-      let listDistance = this.arr.map(function(item, index) { return {freeState: item.freeState, id: index, distance: Math.abs(floor - item.floorNumber)}});
+      console.log(this.arr[0].isActive);
+      let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(floor - item.floorNumber)}});
       listDistance.sort(function(a, b) { return a.distance - b.distance; });
-      let minNumber = listDistance.find(item => item.freeState);
+      let minNumber = listDistance.find(item => item.isActive);
       if (minNumber) {
-        this.arr[minNumber.id].floorNumber.shift();
         this.arr[minNumber.id].floorNumber.push(floor);
-        this.arr[minNumber.id].freeState = false;
+        // this.arr[minNumber.id].isActive = false;
         this.chek = minNumber.id;
         this.startParam = !this.startParam;
       } else {
-        this.arr[listDistance[0].id].floorNumber.shift();
         this.arr[listDistance[0].id].floorNumber.push(floor);
-        this.arr[listDistance[0].id].freeState = false;
+        // this.arr[listDistance[0].id].isActive = false;
         this.chek = listDistance[0].id;
         this.startParam = !this.startParam;
       }  
-    }
+    },
+    cabineActive(column) {
+      this.arr[column - 1].isActive = true;
+      this.arr[column - 1].floorNumber.shift();
+    },
   }
 }
 </script>
