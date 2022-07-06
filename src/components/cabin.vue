@@ -18,7 +18,7 @@ export default {
     data() {
         return {
             x: 50,
-            floor: Math.abs(Math.floor(this.x / 50) - this.arr[column - 1].floorNumber[0]);
+            floor: Math.abs(Math.floor(this.x / 50) - this.arr[column - 1].floorNumber[0]),
         }
     },
     computed: {
@@ -31,7 +31,7 @@ export default {
                         this.x += 5;
                         let timePassed = Date.now() - start;
                         this.$el.style.bottom = String(x) + 'px';
-                        if (x > ) clearInterval(timer);
+                        if (x > 50) clearInterval(timer);
                     }.bind(this), 10);
                 }
             } catch(err) { console.log(err) }
