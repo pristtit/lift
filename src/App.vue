@@ -1,14 +1,18 @@
 <template>
 <div class="working-window-mine">
-  <div class="column" v-for="column of columns" :key="Date.now()">
+  <div class="column" v-for="column of columns" :key="column">
       <floor 
       v-for="floor of floors" 
       :floor="floor"
       :column="column"
-      :key="Date.now()"
+      :key="floor"
       @create="getList"
       />
-      <cabin :class="{ active: isActive }"/>
+      <cabin 
+      :chek="chek" 
+      :column="column"
+      :arr="arr"
+      />
   </div>
 </div>
 </template>
@@ -32,6 +36,7 @@ export default {
       floors: 5,
       columns: 2,
       arr: null,
+      chek: null,
     }
   },
 
@@ -45,17 +50,21 @@ export default {
       let listDistance = this.arr.map(function(item, index) { return {freeState: item.freeState, id: index, distance: Math.abs(floor - item.floorNumber)}});
       listDistance.sort(function(a, b) { return a.distance - b.distance; });
       let minNumber = listDistance.find(item => item.freeState);
-      console.log(listDistance);
       if (minNumber) {
         this.arr[minNumber.id].floorNumber.push(floor);
         this.arr[minNumber.id].floorNumber.shift();
         this.arr[minNumber.id].freeState = false;
+        this.chek = minNumber.id;
+        // console.log(this.chek);
+        // console.log(this.arr);
       } else {
         this.arr[listDistance[0].id].floorNumber.push(floor);
         this.arr[listDistance[0].id].floorNumber.shift();
         this.arr[listDistance[0].id].freeState = false;
+        this.chek = listDistance[0].id;
+        // console.log(this.chek);
+        // console.log(this.arr);
       }  
-      console.log(this.arr);
     }
   }
 }

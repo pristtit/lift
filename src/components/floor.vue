@@ -15,6 +15,11 @@
 import mine from "@/components/mine"
 import btnLift from "@/components/btnLift"
 export default {
+    data() {
+        return {
+            actived: true,
+        }
+    },
     props: {
         floor: {
             type: Number,
