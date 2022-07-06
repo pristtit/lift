@@ -32,12 +32,12 @@ export default {
                     
                     async function ima() {
                         this.arr[this.column - 1].isActive = false;
-                        console.log(this.arr[0].isActive);
+                        console.log('xt');
                         let h = 0;
                         let deltah = Math.round(this.x / 50 - this.arr[this.column - 1].floorNumber[1]);
 
-                        let timer = new Promise((resolve) => {
-                            resolve(setInterval(() => {
+                        let time = new Promise((resolve) => {
+                            let timer = setInterval(() => {
                             this.$el.style.bottom = String(this.x + h) + 'px';
                             if (Math.abs(h) >= Math.abs(deltah) * 50) {
                                 this.x += h;
@@ -45,6 +45,8 @@ export default {
                                 setTimeout(() => {
                                     this.isRelaxation = false;
                                     this.$emit('cabineActive', this.column);
+                                    resolve('r');
+                                    console.log('clear');
                                 }, 3000);
                                 clearInterval(timer);
                             } else {
@@ -54,17 +56,19 @@ export default {
                                     h += 5;
                                 }
                             }
-                            }, 10))
+                            }, 10)
                         });
 
-                        let wait = await timer;
+                        let wait = await time;
+                        console.log('ждал конца отдыха');
                         if (this.arr[this.column - 1].floorNumber.length > 1) {
-                            ima
+                            ima.call(this);
+                            console.log('опа');
                         }
                     }
                     ima.call(this);
                 }
-            } catch(err) { console.log(err) }
+            } catch(err) { console.log('er') }
         }
     }
 }
