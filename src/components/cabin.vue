@@ -27,14 +27,13 @@ export default {
     watch: {
         startParam() {
             try {
-                console.log(this.arr[this.column - 1].floorNumber);
                 if (this.column === this.chek + 1 && this.arr[this.column - 1].isActive){
                     
                     async function ima() {
                         this.arr[this.column - 1].isActive = false;
-                        console.log('xt');
                         let h = 0;
                         let deltah = Math.round(this.x / 50 - this.arr[this.column - 1].floorNumber[1]);
+                        this.arr[this.column - 1].floorNumber.shift();
 
                         let time = new Promise((resolve) => {
                             let timer = setInterval(() => {
@@ -46,7 +45,6 @@ export default {
                                     this.isRelaxation = false;
                                     this.$emit('cabineActive', this.column);
                                     resolve('r');
-                                    console.log('clear');
                                 }, 3000);
                                 clearInterval(timer);
                             } else {
@@ -60,10 +58,8 @@ export default {
                         });
 
                         let wait = await time;
-                        console.log('ждал конца отдыха');
                         if (this.arr[this.column - 1].floorNumber.length > 1) {
                             ima.call(this);
-                            console.log('опа');
                         }
                     }
                     ima.call(this);
