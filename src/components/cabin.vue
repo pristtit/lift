@@ -5,7 +5,10 @@
 <script>
 export default {
     props: {
-        chek: {
+        nextColumn: {
+            type: Number,
+        },
+        nextFloor: {
             type: Number,
         },
         column: {
@@ -16,55 +19,46 @@ export default {
         },
         startParam: {
             type: Boolean,
+        },
+        queue: {
+            type: Array,
         }
     },
     data() {
         return {
+            start: 40,
             x: 50,
             isRelaxation: false,
         }
     },
     watch: {
         startParam() {
-            try {
-                if (this.column === this.chek + 1 && this.arr[this.column - 1].isActive){
-                    
-                    async function ima() {
+            if (this.column === this.nextColumn + 1) {
+                let h = 0;
+                let deltah = Math.round(this.x / 50 - this.queue[0]);
+                this.arr[this.column - 1].floorNumber = this.queue[0];
+                this.queue.shift();
+
+                let timer = setInterval(() => {
+                this.$el.style.bottom = String(this.x + h) + 'px';
+                if (Math.abs(h) >= Math.abs(deltah) * 50) {
+                    this.x += h;
+                    this.isRelaxation = true;
+                    setTimeout(() => {
+                        this.isRelaxation = false;
                         this.arr[this.column - 1].isActive = false;
-                        let h = 0;
-                        let deltah = Math.round(this.x / 50 - this.arr[this.column - 1].floorNumber[1]);
-                        this.arr[this.column - 1].floorNumber.shift();
-
-                        let time = new Promise((resolve) => {
-                            let timer = setInterval(() => {
-                            this.$el.style.bottom = String(this.x + h) + 'px';
-                            if (Math.abs(h) >= Math.abs(deltah) * 50) {
-                                this.x += h;
-                                this.isRelaxation = true;
-                                setTimeout(() => {
-                                    this.isRelaxation = false;
-                                    this.$emit('cabineActive', this.column);
-                                    resolve('r');
-                                }, 3000);
-                                clearInterval(timer);
-                            } else {
-                                if (deltah > 0) {
-                                    h -= 5;
-                                } else {
-                                    h += 5;
-                                }
-                            }
-                            }, 10)
-                        });
-
-                        let wait = await time;
-                        if (this.arr[this.column - 1].floorNumber.length > 1) {
-                            ima.call(this);
-                        }
+                        // this.$emit('cabineActive', this.column);
+                    }, 7000);
+                    clearInterval(timer);
+                } else {
+                    if (deltah > 0) {
+                        h -= 5;
+                    } else {
+                        h += 5;
                     }
-                    ima.call(this);
                 }
-            } catch(err) { console.log('er') }
+                }, 10)
+            }
         }
     }
 }
