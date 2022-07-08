@@ -6,7 +6,7 @@
 export default {
     methods: {
         pushListApp() {
-            this.$emit('create')
+            this.$emit('pushListApp')
         }
     }
     

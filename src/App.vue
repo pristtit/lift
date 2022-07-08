@@ -1,14 +1,15 @@
 <template>
 <div class="working-window-mine">
   <div class="column" v-for="column of columns" :key="column">
-      <floor 
+
+      <columnFloor 
       v-for="floor of floors" 
       :floor="floor"
       :floors="floors"
-      :column="column"
       :key="floor"
-      @create="getList"
+      @pushListApp="pushListApp"
       />
+      
       <cabin 
       :startParam="startParam"
       :nextColumn="nextColumn" 
@@ -16,36 +17,20 @@
       :arr="arr"
       :nextFloor="nextFloor"
       :queue="queue"
-      @cabineActive="cabineActive"
       />
   </div>
 </div>
 </template>
 
 <script>
-import floor from "@/components/floor"
+import columnFloor from "@/components/columnFloor"
 import cabin from '@/components/cabin.vue'
 
 export default {
 
-  mounted() {
-    for (let a = 0; a < this.columns; a++) {
-      this.arr.push({floorNumber: 1, isActive: false});
-    }
-
-    setInterval(() => {
-      if (this.queue.length > 0) {
-        if (this.arr.find(item => item.isActive === false)) {
-          let flor = this.floor;
-          let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(flor - item.floorNumber)}});
-          listDistance.sort(function(a, b) { return a.distance - b.distance });
-          this.nextColumn = listDistance.find(item => !item.isActive).id;
-          this.arr[this.nextColumn].isActive = true;
-          this.startParam = !this.startParam;
-          console.log(listDistance);
-        }
-      }
-    }, 30);
+  components: {
+    columnFloor,
+    cabin,
   },
 
   data() {
@@ -60,39 +45,35 @@ export default {
     }
   },
 
-  components: {
-    floor,
-    cabin,
+  mounted() {
+    
+    for (let columnIter = 0; columnIter < this.columns; columnIter++) {
+      this.arr.push({floorNumber: 1, isActive: false});
+    }
+
+    setInterval(() => {
+      if (this.queue.length > 0) {
+        if (this.arr.find(item => item.isActive === false)) {
+
+          let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(this.flor - item.floorNumber)}}, this);
+          listDistance.sort(function(a, b) { return a.distance - b.distance });
+
+          this.nextColumn = listDistance.find(item => !item.isActive).id;
+          this.arr[this.nextColumn].isActive = true;
+          this.startParam = !this.startParam;
+        }
+      }
+    }, 30);
   },
 
   methods: {
-    getList(floor, column) {
+    pushListApp(floor) {
       this.nextFloor = floor;
-      // // // if (!this.arr.find(element => element.floorNumber.includes(floor))) {
-      // //   let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(floor - item.floorNumber)}});
-      // //   listDistance.sort(function(a, b) { return a.distance - b.distance; });
-      // //   let minNumber = listDistance.find(item => item.isActive);
 
-      // //   if (minNumber) {
-      // //     this.arr[minNumber.id].floorNumber.push(floor);
-      // //     // this.arr[minNumber.id].isActive = false;
-      // //     this.chek = minNumber.id;
       if (!this.queue.includes(floor) && !this.arr.find(element => element.floorNumber === floor)) {
         this.queue.push(floor);
-        console.log(this.queue);
       }
-      //   } else {
-      //     this.arr[listDistance[0].id].floorNumber.push(floor);
-      //     // this.arr[listDistance[0].id].isActive = false;
-      //     this.chek = listDistance[0].id;
-      //     this.startParam = !this.startParam;
-      //   }
-      // } 
     },
-    // cabineActive(column) {
-    //   this.arr[column - 1].isActive = true;
-    //   // this.arr[column - 1].floorNumber.shift();
-    // },
   }
 }
 </script>

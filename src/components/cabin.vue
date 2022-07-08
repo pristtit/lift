@@ -1,9 +1,10 @@
 <template>
-    <div :class="{ relaxation: isRelaxation }" class="column__cabin column__cabin_size"></div>
+    <div :class="{ cabin_relaxation: isRelaxation }" class="cabin cabin_size"></div>
 </template>
 
 <script>
 export default {
+
     props: {
         nextColumn: {
             type: Number,
@@ -24,13 +25,14 @@ export default {
             type: Array,
         }
     },
+
     data() {
         return {
-            start: 40,
             x: 50,
             isRelaxation: false,
         }
     },
+
     watch: {
         startParam() {
             if (this.column === this.nextColumn + 1) {
@@ -40,23 +42,24 @@ export default {
                 this.queue.shift();
 
                 let timer = setInterval(() => {
-                this.$el.style.bottom = String(this.x + h) + 'px';
-                if (Math.abs(h) >= Math.abs(deltah) * 50) {
-                    this.x += h;
-                    this.isRelaxation = true;
-                    setTimeout(() => {
-                        this.isRelaxation = false;
-                        this.arr[this.column - 1].isActive = false;
-                        // this.$emit('cabineActive', this.column);
-                    }, 7000);
-                    clearInterval(timer);
-                } else {
-                    if (deltah > 0) {
-                        h -= 5;
+                    this.$el.style.bottom = String(this.x + h) + 'px';
+
+                    if (Math.abs(h) >= Math.abs(deltah) * 50) {
+                        this.x += h;
+                        this.isRelaxation = true;
+
+                        setTimeout(() => {
+                            this.isRelaxation = false;
+                            this.arr[this.column - 1].isActive = false;
+                        }, 3000);
+                        clearInterval(timer);
                     } else {
-                        h += 5;
+                        if (deltah > 0) {
+                            h -= 5;
+                        } else {
+                            h += 5;
+                        }
                     }
-                }
                 }, 10)
             }
         }
@@ -66,28 +69,20 @@ export default {
 
 <style>
 
-.column__cabin {
+.cabin {
     display: inline-block;
     position: relative;
     background-color: blue;
     bottom: 50px;
     left: 4px;
 }
-.column__cabin_size {
+
+.cabin_size {
     width: 50px;
     height: 50px;
 }
 
-.gogo {
-    left: 10px;
-}
- 
-
-.test {
-    right: 30px;
-}
-
-.relaxation {
+.cabin_relaxation {
     animation: flicker 1s infinite
 }
 
@@ -95,4 +90,5 @@ export default {
     from { opacity: 1; }
     to { opacity: 0.3; }
   }
+
 </style>

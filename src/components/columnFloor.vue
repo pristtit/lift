@@ -1,26 +1,29 @@
 <template>
     <div class="column__floor">
-        <mine/>
+        <columnMineBorder/>
+
         <div class="column__floor-sidebar">
-            <btnLift 
+            <columnBtnFloor 
             class="column__btn-floor column__btn-floor_display "
-            @create="pushListApp"
+            @pushListApp="pushListApp"
             />
+
             <div class="column__number-floor">{{ floors + 1 - floor }}</div>
         </div>
     </div>
 </template>
 
 <script>
-import mine from "@/components/mine"
-import btnLift from "@/components/btnLift"
+import columnMineBorder from "@/components/columnMineBorder"
+import columnBtnFloor from "@/components/columnBtnFloor"
 
 export default {
-    data() {
-        return {
-            actived: true,
-        }
+
+    components: {
+        columnMineBorder,
+        columnBtnFloor,
     },
+
     props: {
         floor: {
             type: Number,
@@ -28,17 +31,11 @@ export default {
         floors: {
             type: Number,
         },
-        column: {
-            type: Number,
-        }
     },
-    components: {
-        mine,
-        btnLift,
-    },
+
     methods: {
         pushListApp() {
-            this.$emit('create', this.floors + 1 - this.floor, this.column)
+            this.$emit('pushListApp', this.floors + 1 - this.floor)
         }
     }
 }
@@ -48,7 +45,6 @@ export default {
 
 .column__floor {
     display: flex;
-
 }
 
 .column__number-floor {
