@@ -15,7 +15,6 @@
       :nextColumn="nextColumn" 
       :column="column"
       :arr="arr"
-      :nextFloor="nextFloor"
       :queue="queue"
       />
   </div>
@@ -55,7 +54,7 @@ export default {
       if (this.queue.length > 0) {
         if (this.arr.find(item => item.isActive === false)) {
 
-          let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(this.flor - item.floorNumber)}}, this);
+          let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(this.nextFloor - item.floorNumber)}}, this);
           listDistance.sort(function(a, b) { return a.distance - b.distance });
 
           this.nextColumn = listDistance.find(item => !item.isActive).id;

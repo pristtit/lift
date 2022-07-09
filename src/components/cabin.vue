@@ -1,15 +1,26 @@
 <template>
-    <div :class="{ cabin_relaxation: isRelaxation }" class="cabin cabin_size"></div>
+    <div :class="{ cabin_relaxation: isRelaxation }" class="cabin cabin_size">
+        <cabinScoreboard
+        :arr="arr"
+        :column="column"
+        :nextFloor="nextFloor"
+        :x="x"
+        :draw="draw"
+        />
+    </div>
 </template>
 
 <script>
+import cabinScoreboard from '@/components/cabinScoreboard.vue'
+
 export default {
+
+    components: {
+        cabinScoreboard
+    },
 
     props: {
         nextColumn: {
-            type: Number,
-        },
-        nextFloor: {
             type: Number,
         },
         column: {
@@ -30,6 +41,8 @@ export default {
         return {
             x: 50,
             isRelaxation: false,
+            nextFloor: 1,
+            draw: true,
         }
     },
 
@@ -38,7 +51,9 @@ export default {
             if (this.column === this.nextColumn + 1) {
                 let h = 0;
                 let deltah = Math.round(this.x / 50 - this.queue[0]);
+                this.draw = deltah < 0;
                 this.arr[this.column - 1].floorNumber = this.queue[0];
+                this.nextFloor = this.queue[0];
                 this.queue.shift();
 
                 let timer = setInterval(() => {
@@ -72,7 +87,7 @@ export default {
 .cabin {
     display: inline-block;
     position: relative;
-    background-color: blue;
+    background-color: rgb(246, 255, 0);
     bottom: 50px;
     left: 4px;
 }
