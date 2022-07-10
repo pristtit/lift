@@ -1,22 +1,22 @@
 <template>
-  <div class="column__floor-sidebar">
-    <columnBtnFloor
+  <div class="floorSideBar">
+    <sideBarBtnFloor
     :floor="floor"
     :fakeQueue="fakeQueue"
     @pushListApp="pushListApp"
     />
 
-    <div class="column__number-floor">{{ floor }}</div>
+    <div class="floorSideBar__numberFloor">{{ floor }}</div>
   </div>
 </template>
 
 <script>
-import columnBtnFloor from "@/components/columnBtnFloor"
+import sideBarBtnFloor from "@/components/sideBarBtnFloor"
 
 export default {
 
     components: {
-        columnBtnFloor,
+        sideBarBtnFloor,
     },
 
     props: {
@@ -38,13 +38,13 @@ export default {
 
 <style>
 
-.column__number-floor {
+.floorSideBar__numberFloor {
     display: block;
     width: 20px;
     text-align: center
 }
 
-.column__floor-sidebar {
+.floorSideBar {
     height: 50px;
     position: relative;
     bottom: 50px;

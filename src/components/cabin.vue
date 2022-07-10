@@ -4,7 +4,6 @@
         :arr="arr"
         :column="column"
         :nextFloor="nextFloor"
-        :x="x"
         :draw="draw"
         />
     </div>

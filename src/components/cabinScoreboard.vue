@@ -3,18 +3,13 @@
     <div 
     :class="{cabin__direction_up: draw, cabin__direction_down: !draw}"
     class="cabin__direction"></div>
-    <div class="cabin__number-floor">{{ nextFloor }}</div>
+
+    <div class="cabin__numberFloor">{{ nextFloor }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      q: false,
-      w: false,
-    }
-  },
 
   props: {
     nextFloor: {
@@ -26,19 +21,11 @@ export default {
     column: {
       type: Number
     },
-    x: {
-      type: Number
-    },
     draw: {
       type: Boolean
     }
   },
 
-  computed: {
-    go() {
-      th
-    }
-  }
 }
 </script>
 
@@ -65,7 +52,7 @@ export default {
   background-size: cover;
 }
 
-.cabin__number-floor {
+.cabin__numberFloor {
   width: 20px;
   height: 20px;
 }

@@ -1,8 +1,8 @@
 <template>
-<div class="working-window-mine">
+<div class="workingWindowMine">
   <div class="column" v-for="column of columns" :key="column">
 
-      <columnMineBorder v-for="floor of floors" :key="floor"/>
+      <mineBorder v-for="floor of floors" :key="floor"/>
       
       <cabin 
       :startParam="startParam"
@@ -13,22 +13,21 @@
       :queue="queue"
       />
   </div>
-  <div class="floorSideBar">
+  
+  <div class="divFloorSideBar">
     <floorSideBar
     v-for="floor of floors"
     :key="floor"
     :floor="floor"
     :fakeQueue="fakeQueue"
     @pushListApp="pushListApp"
-    :queue="queue"
-    :arr="arr"
     />
   </div>
 </div>
 </template>
 
 <script>
-import columnMineBorder from "@/components/columnMineBorder"
+import mineBorder from "@/components/mineBorder"
 import cabin from '@/components/cabin.vue'
 import floorSideBar from '@/components/floorSideBar.vue'
 
@@ -38,7 +37,7 @@ export default {
   components: {
     cabin,
     floorSideBar,
-    columnMineBorder,
+    mineBorder,
   },
 
   data() {
@@ -55,7 +54,7 @@ export default {
   },
 
   mounted() {
-    
+    // проверка на локал
     for (let columnIter = 0; columnIter < this.columns; columnIter++) {
       this.arr.push({floorNumber: 1, isActive: false});
     }
@@ -96,7 +95,7 @@ export default {
 	border: 0;
 }
 
-.working-window-mine {
+.workingWindowMine {
   display: flex;
   height: 100vh;
   width: 100vw;
@@ -109,7 +108,7 @@ export default {
   margin: 5px;
 }
 
-.floorSideBar {
+.divFloorSideBar {
   display: flex;
   flex-direction: column-reverse;
 }

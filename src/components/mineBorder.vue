@@ -1,5 +1,5 @@
 <template>
-    <div class="column__mine-border column__mine-border_size"></div>
+    <div class="mineBorder mineBorder_size"></div>
 </template>
 
 <script>
@@ -10,12 +10,12 @@ export default {
 
 <style>
 
-.column__mine-border {
+.mineBorder {
     border-left: 4px solid red;
     border-right: 4px solid red;
 }
 
-.column__mine-border_size {
+.mineBorder_size {
     width: 50px;
     height: 50px;
 }

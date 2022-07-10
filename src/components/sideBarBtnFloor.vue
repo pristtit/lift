@@ -1,5 +1,10 @@
 <template>
-    <butten :class="{btnOn: fakeQueue.includes(floor)}" class="column__btn-floor" @click="pushListApp"></butten>
+    <butten
+    :class="{floorSidebar__btnOn: fakeQueue.includes(floor)}"
+    class="floorSidebar__btn-floor"
+    @click="pushListApp"
+    >
+    </butten>
 </template>
 
 <script>
@@ -25,7 +30,7 @@ export default {
 
 <style>
 
-.column__btn-floor {
+.floorSidebar__btn-floor {
     background-image: url(@/assets/btnFloor.png);
     background-size: contain;
     display: block;
@@ -33,7 +38,7 @@ export default {
     height: 20px;
 }
 
-.btnOn {
+.floorSidebar__btnOn {
     background-color: rgb(140, 255, 0);
 }
 </style>
