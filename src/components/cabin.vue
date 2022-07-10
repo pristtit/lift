@@ -34,7 +34,10 @@ export default {
         },
         queue: {
             type: Array,
-        }
+        },
+        fakeQueue: {
+            type: Array,
+        },
     },
 
     data() {
@@ -62,6 +65,7 @@ export default {
                     if (Math.abs(h) >= Math.abs(deltah) * 50) {
                         this.x += h;
                         this.isRelaxation = true;
+                        this.fakeQueue.splice(this.fakeQueue.indexOf(this.nextFloor), 1);
 
                         setTimeout(() => {
                             this.isRelaxation = false;
@@ -70,12 +74,12 @@ export default {
                         clearInterval(timer);
                     } else {
                         if (deltah > 0) {
-                            h -= 5;
+                            h -= 2;
                         } else {
-                            h += 5;
+                            h += 2;
                         }
                     }
-                }, 10)
+                }, 40)
             }
         }
     }
@@ -85,7 +89,7 @@ export default {
 <style>
 
 .cabin {
-    display: inline-block;
+    display: block;
     position: relative;
     background-color: rgb(246, 255, 0);
     bottom: 50px;

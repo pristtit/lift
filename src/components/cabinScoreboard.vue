@@ -46,8 +46,7 @@ export default {
 
 .cabin__scoreboard {
     display: flex;
-    height: 40px;
-    width: 40px;
+
 }
 
 .cabin__direction {

@@ -2,41 +2,51 @@
 <div class="working-window-mine">
   <div class="column" v-for="column of columns" :key="column">
 
-      <columnFloor 
-      v-for="floor of floors" 
-      :floor="floor"
-      :floors="floors"
-      :key="floor"
-      @pushListApp="pushListApp"
-      />
+      <columnMineBorder v-for="floor of floors" :key="floor"/>
       
       <cabin 
       :startParam="startParam"
       :nextColumn="nextColumn" 
       :column="column"
+      :fakeQueue="fakeQueue"
       :arr="arr"
       :queue="queue"
       />
+  </div>
+  <div class="floorSideBar">
+    <floorSideBar
+    v-for="floor of floors"
+    :key="floor"
+    :floor="floor"
+    :fakeQueue="fakeQueue"
+    @pushListApp="pushListApp"
+    :queue="queue"
+    :arr="arr"
+    />
   </div>
 </div>
 </template>
 
 <script>
-import columnFloor from "@/components/columnFloor"
+import columnMineBorder from "@/components/columnMineBorder"
 import cabin from '@/components/cabin.vue'
+import floorSideBar from '@/components/floorSideBar.vue'
+
 
 export default {
 
   components: {
-    columnFloor,
     cabin,
+    floorSideBar,
+    columnMineBorder,
   },
 
   data() {
     return {
-      floors: 7,
+      floors: 10,
       columns: 3,
       queue: [],
+      fakeQueue: [],
       arr: [],
       nextColumn: null,
       nextFloor: null,
@@ -71,6 +81,7 @@ export default {
 
       if (!this.queue.includes(floor) && !this.arr.find(element => element.floorNumber === floor)) {
         this.queue.push(floor);
+        this.fakeQueue.push(floor);
       }
     },
   }
@@ -94,4 +105,12 @@ export default {
   padding: 0 5% 0 5%;
 }
 
+.column {
+  margin: 5px;
+}
+
+.floorSideBar {
+  display: flex;
+  flex-direction: column-reverse;
+}
 </style>
