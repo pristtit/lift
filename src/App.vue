@@ -13,7 +13,7 @@
       :queue="queue"
       />
   </div>
-  
+
   <div class="divFloorSideBar">
     <floorSideBar
     v-for="floor of floors"
@@ -42,8 +42,8 @@ export default {
 
   data() {
     return {
-      floors: 10,
-      columns: 3,
+      floors: 5,
+      columns: 1,
       queue: [],
       fakeQueue: [],
       arr: [],
@@ -54,11 +54,26 @@ export default {
   },
 
   mounted() {
-    // проверка на локал
-    for (let columnIter = 0; columnIter < this.columns; columnIter++) {
-      this.arr.push({floorNumber: 1, isActive: false});
-    }
+    
+    // this.queue = JSON.parse(sessionStorage.getItem("queue")) || []
+    // this.fakeQueue = JSON.parse(sessionStorage.getItem("fakeQueue")) || []
+    // this.nextColumn = JSON.parse(sessionStorage.getItem("nextColumn")) || null
+    // this.nextFloor = JSON.parse(sessionStorage.getItem("appNextFloor")) || null
+    // this.startParam = JSON.parse(sessionStorage.getItem("startParam")) || true
+    
 
+    // if (JSON.parse(sessionStorage.getItem("arr"))) {
+    //   this.arr = JSON.parse(sessionStorage.getItem("arr"));
+    // } else {
+    //   this.arr = [];
+    //   for (let columnIter = 0; columnIter < this.columns; columnIter++) {
+    //     this.arr.push({floorNumber: 1, isActive: false});
+    //   }
+    // }
+    for (let columnIter = 0; columnIter < this.columns; columnIter++) {
+        this.arr.push({floorNumber: 1, isActive: false});
+    }
+    
     setInterval(() => {
       if (this.queue.length > 0) {
         if (this.arr.find(item => item.isActive === false)) {
@@ -73,6 +88,44 @@ export default {
       }
     }, 30);
   },
+  
+  // watch: {
+
+  //   queue: {
+  //     handler(newValue) {
+  //       console.log('o');
+  //       sessionStorage.setItem("queue", JSON.stringify(newValue));
+  //     },
+  //     deep: true
+  //   },
+
+  //   fakeQueue: {
+  //     handler(newValue) {
+  //       console.log('f');
+  //       sessionStorage.setItem("fakeQueue", JSON.stringify(newValue));
+  //     },
+  //     deep: true
+  //   },
+
+  //   nextColumn(newValue) {
+  //     sessionStorage.setItem("nextColumn", JSON.stringify(newValue));
+  //   },
+
+  //   nextFloor(newValue) {
+  //     sessionStorage.setItem("appNextFloor", JSON.stringify(newValue));
+  //   },
+
+  //   startParam(newValue) {
+  //     sessionStorage.setItem("startParam", JSON.stringify(newValue));
+  //   },
+
+  //   arr: {
+  //     handler(newValue) {
+  //       sessionStorage.setItem("arr", JSON.stringify(newValue));
+  //     },
+  //     deep: true
+  //   },
+  // },
 
   methods: {
     pushListApp(floor) {
@@ -97,14 +150,17 @@ export default {
 
 .workingWindowMine {
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 90vh;
+  width: 90vw;
   justify-content: left;
   align-items: flex-end;
   padding: 0 5% 0 5%;
 }
 
 .column {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
   margin: 5px;
 }
 

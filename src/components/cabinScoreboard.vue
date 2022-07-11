@@ -1,5 +1,5 @@
 <template>
-  <div v-show="this.arr[this.column - 1]?.isActive" class="cabin__scoreboard">
+  <div v-show="this.arr[this.column - 1]?.isActive" class="cabin__scoreboard cabin__scoreboard_size">
     <div 
     :class="{cabin__direction_up: draw, cabin__direction_down: !draw}"
     class="cabin__direction"></div>
@@ -32,12 +32,18 @@ export default {
 <style>
 
 .cabin__scoreboard {
-    display: flex;
+  background-color: rgba(150, 144, 144, 0.692);
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+}
 
+.cabin__scoreboard_size {
+  width: 40px;
+  height: 20px;
 }
 
 .cabin__direction {
-
   width: 20px;
   height: 20px;
 }
@@ -53,6 +59,8 @@ export default {
 }
 
 .cabin__numberFloor {
+  display: flex;
+  justify-content: center;
   width: 20px;
   height: 20px;
 }

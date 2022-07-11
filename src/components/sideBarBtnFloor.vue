@@ -1,7 +1,7 @@
 <template>
     <butten
     :class="{floorSidebar__btnOn: fakeQueue.includes(floor)}"
-    class="floorSidebar__btn-floor"
+    class="floorSidebar__btnFloor"
     @click="pushListApp"
     >
     </butten>
@@ -30,7 +30,7 @@ export default {
 
 <style>
 
-.floorSidebar__btn-floor {
+.floorSidebar__btnFloor {
     background-image: url(@/assets/btnFloor.png);
     background-size: contain;
     display: block;

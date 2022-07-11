@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ cabin_relaxation: isRelaxation }" class="cabin cabin_size">
+    <div :class="{ cabin_relaxation: isRelaxation }" class="cabin cabin_size cabin_position">
         <cabinScoreboard
         :arr="arr"
         :column="column"
@@ -41,28 +41,35 @@ export default {
 
     data() {
         return {
-            x: 50,
+            height: 50,
             isRelaxation: false,
             nextFloor: 1,
             draw: true,
         }
     },
 
+    // mounted() {
+    //     this.height = JSON.parse(sessionStorage.getItem("height")) || 50
+    //     this.isRelaxation = JSON.parse(sessionStorage.getItem("isRelaxation")) || false
+    //     this.nextFloor = JSON.parse(sessionStorage.getItem("nextFloor")) || 1
+    //     this.draw = JSON.parse(sessionStorage.getItem("draw")) || true
+    // },
+
     watch: {
         startParam() {
             if (this.column === this.nextColumn + 1) {
                 let h = 0;
-                let deltah = Math.round(this.x / 50 - this.queue[0]);
+                let deltah = Math.round(this.height / 50 - this.queue[0]);
                 this.draw = deltah < 0;
                 this.arr[this.column - 1].floorNumber = this.queue[0];
                 this.nextFloor = this.queue[0];
                 this.queue.shift();
 
                 let timer = setInterval(() => {
-                    this.$el.style.bottom = String(this.x + h) + 'px';
+                    this.$el.style.bottom = String(this.height + h) + 'px';
 
                     if (Math.abs(h) >= Math.abs(deltah) * 50) {
-                        this.x += h;
+                        this.height += h;
                         this.isRelaxation = true;
                         this.fakeQueue.splice(this.fakeQueue.indexOf(this.nextFloor), 1);
 
@@ -80,7 +87,24 @@ export default {
                     }
                 }, 40)
             }
-        }
+        },
+
+        // height(newValue) {
+        //     sessionStorage.setItem("height", JSON.stringify(newValue));
+        // },
+        
+        // isRelaxation(newValue) {
+        //     sessionStorage.setItem("isRelaxation", JSON.stringify(newValue));
+        // },
+
+        // nextFloor(newValue) {
+        //     sessionStorage.setItem("nextFloor", JSON.stringify(newValue));
+        // },
+
+        // draw(newValue) {
+        //     sessionStorage.setItem("draw", JSON.stringify(newValue));
+        // },
+
     }
 }
 </script>
@@ -88,16 +112,22 @@ export default {
 <style>
 
 .cabin {
-    display: block;
+    display: flex;
+    justify-content: center;
     position: relative;
     background-color: rgb(246, 255, 0);
-    bottom: 50px;
-    left: 4px;
 }
 
 .cabin_size {
     width: 50px;
     height: 50px;
+}
+
+.cabin_position {
+    width: 50px;
+    height: 50px;
+    bottom: 50px;
+    left: 4px;
 }
 
 .cabin_relaxation {
