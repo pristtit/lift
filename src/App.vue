@@ -5,6 +5,7 @@
       <mineBorder v-for="floor of floors" :key="floor"/>
       
       <cabin 
+      :commonNextFloor="commonNextFloor"
       :startParam="startParam"
       :nextColumn="nextColumn" 
       :column="column"
@@ -42,96 +43,75 @@ export default {
 
   data() {
     return {
-      floors: 5,
-      columns: 1,
+      floors: 7,
+      columns: 3,
       queue: [],
       fakeQueue: [],
       arr: [],
-      nextColumn: null,
-      nextFloor: null,
+      nextColumn: undefined,
+      commonNextFloor: [],
       startParam: true,
     }
   },
 
-  mounted() {
+  created() {
     
-    // this.queue = JSON.parse(sessionStorage.getItem("queue")) || []
-    // this.fakeQueue = JSON.parse(sessionStorage.getItem("fakeQueue")) || []
-    // this.nextColumn = JSON.parse(sessionStorage.getItem("nextColumn")) || null
-    // this.nextFloor = JSON.parse(sessionStorage.getItem("appNextFloor")) || null
-    // this.startParam = JSON.parse(sessionStorage.getItem("startParam")) || true
-    
+    this.queue = JSON.parse(sessionStorage.getItem("queue")) || [];
+    this.fakeQueue = JSON.parse(sessionStorage.getItem("fakeQueue")) || [];
+    this.commonNextFloor = JSON.parse(sessionStorage.getItem("commonNextFloor")) || [];
 
-    // if (JSON.parse(sessionStorage.getItem("arr"))) {
-    //   this.arr = JSON.parse(sessionStorage.getItem("arr"));
-    // } else {
-    //   this.arr = [];
-    //   for (let columnIter = 0; columnIter < this.columns; columnIter++) {
-    //     this.arr.push({floorNumber: 1, isActive: false});
-    //   }
-    // }
-    for (let columnIter = 0; columnIter < this.columns; columnIter++) {
-        this.arr.push({floorNumber: 1, isActive: false});
+    if (JSON.parse(sessionStorage.getItem("arr"))) {
+      this.arr = JSON.parse(sessionStorage.getItem("arr"));
+    } else {
+      for (let columnIter = 0; columnIter < this.columns; columnIter++) {
+        this.arr.push({floorNumber: 1, isActive: false, index: columnIter, height: 50, isRelaxation: false});
+      }
     }
-    
-    setInterval(() => {
-      if (this.queue.length > 0) {
-        if (this.arr.find(item => item.isActive === false)) {
-
-          let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(this.nextFloor - item.floorNumber)}}, this);
+  },
+  
+  watch: {
+    queue: {
+      handler(newValue) {
+        sessionStorage.setItem("queue", JSON.stringify(newValue));
+        if (this.arr.find(item => !item.isActive) && this.commonNextFloor.length > 0) {
+          let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(this.commonNextFloor[0] - item.floorNumber)}}, this);
           listDistance.sort(function(a, b) { return a.distance - b.distance });
 
           this.nextColumn = listDistance.find(item => !item.isActive).id;
           this.arr[this.nextColumn].isActive = true;
+          this.arr[this.nextColumn].floorNumber = this.commonNextFloor.shift();
           this.startParam = !this.startParam;
-        }
-      }
-    }, 30);
+          }
+      },
+      deep: true
+    },
+
+    fakeQueue: {
+      handler(newValue) {
+        sessionStorage.setItem("fakeQueue", JSON.stringify(newValue));
+      },
+      deep: true
+    },
+
+    commonNextFloor: {
+      handler(newValue) {
+        sessionStorage.setItem("commonNextFloor", JSON.stringify(newValue));
+      },
+      deep: true
+    },
+
+    arr: {
+      handler(newValue) {
+        sessionStorage.setItem("arr", JSON.stringify(newValue));
+      },
+      deep: true
+    },
   },
-  
-  // watch: {
-
-  //   queue: {
-  //     handler(newValue) {
-  //       console.log('o');
-  //       sessionStorage.setItem("queue", JSON.stringify(newValue));
-  //     },
-  //     deep: true
-  //   },
-
-  //   fakeQueue: {
-  //     handler(newValue) {
-  //       console.log('f');
-  //       sessionStorage.setItem("fakeQueue", JSON.stringify(newValue));
-  //     },
-  //     deep: true
-  //   },
-
-  //   nextColumn(newValue) {
-  //     sessionStorage.setItem("nextColumn", JSON.stringify(newValue));
-  //   },
-
-  //   nextFloor(newValue) {
-  //     sessionStorage.setItem("appNextFloor", JSON.stringify(newValue));
-  //   },
-
-  //   startParam(newValue) {
-  //     sessionStorage.setItem("startParam", JSON.stringify(newValue));
-  //   },
-
-  //   arr: {
-  //     handler(newValue) {
-  //       sessionStorage.setItem("arr", JSON.stringify(newValue));
-  //     },
-  //     deep: true
-  //   },
-  // },
 
   methods: {
     pushListApp(floor) {
-      this.nextFloor = floor;
-
       if (!this.queue.includes(floor) && !this.arr.find(element => element.floorNumber === floor)) {
+        this.commonNextFloor.push(floor);
         this.queue.push(floor);
         this.fakeQueue.push(floor);
       }
