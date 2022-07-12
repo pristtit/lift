@@ -51,73 +51,57 @@ export default {
         }
     },
 
-    // mounted() {
-    //     this.height = JSON.parse(sessionStorage.getItem("height")) || 50
-    //     this.isRelaxation = JSON.parse(sessionStorage.getItem("isRelaxation")) || false
-    //     this.nextFloor = JSON.parse(sessionStorage.getItem("nextFloor")) || 1
-    //     this.draw = JSON.parse(sessionStorage.getItem("draw")) || true
-    // },
-
     watch: {
-        startParam() {
-            if (this.nextColumn + 1) {
-                if (this.column === this.nextColumn + 1) {
-                    this.go();
+        startParam: {
+            handler() {
+                if (this.nextColumn + 1) {
+                    if (this.column === this.nextColumn + 1) {
+                        this.go();
+                    }
+                } else {
+                    if (this.arr.filter(item => item.isActive).find(item => item.index === this.column - 1)) {
+                        this.go();
+                    }
                 }
-            } else {
-                console.log("piiii");
-                if (this.arr.filter(item => item.isActive).find(item => item.index === this.column - 1)) {
-                    this.go();
-                }
-            }
+            },
+            immediate: true,
         },
+    },
 
-
-        // height(newValue) {
-        //     sessionStorage.setItem("height", JSON.stringify(newValue));
-        // },
-        
-        // isRelaxation(newValue) {
-        //     sessionStorage.setItem("isRelaxation", JSON.stringify(newValue));
-        // },
-
-        // nextFloor(newValue) {
-        //     sessionStorage.setItem("nextFloor", JSON.stringify(newValue));
-        // },
-
-        // draw(newValue) {
-        //     sessionStorage.setItem("draw", JSON.stringify(newValue));
-        // },
-
+    mounted() {
+        this.$el.style.bottom = String(this.arr[this.column - 1].height) + 'px';
     },
 
     methods: {
         go() {
             let h = 0;
-            let deltah = Math.round(this.height / 50 - this.commonNextFloor[0]);
+            let deltah = Math.round(this.arr[this.column - 1].height - this.arr[this.column - 1].floorNumber * 50);
             this.draw = deltah < 0;
-            this.arr[this.column - 1].floorNumber = this.commonNextFloor[0];
-            this.nextFloor = this.commonNextFloor[0];
-            this.commonNextFloor.shift();
+            this.nextFloor = this.arr[this.column - 1].floorNumber;
             
             let timer = setInterval(() => {
-                this.$el.style.bottom = String(this.height + h) + 'px';
+                this.$el.style.bottom = String(this.arr[this.column - 1].height) + 'px';
 
-                if (Math.abs(h) >= Math.abs(deltah) * 50) {
-                    this.height += h;
+                if (Math.abs(h) >= Math.abs(deltah)) {
+                    this.arr[this.column - 1].isRelaxation = true;
                     this.isRelaxation = true;
-                    this.fakeQueue.splice(this.fakeQueue.indexOf(this.nextFloor), 1);
+                    if (deltah) {
+                        this.fakeQueue.splice(this.fakeQueue.indexOf(this.nextFloor), 1);
+                    }
 
                     setTimeout(() => {
-                        this.isRelaxation = false;
+                        this.arr[this.column - 1].isRelaxation = false;
                         this.arr[this.column - 1].isActive = false;
+                        this.isRelaxation = false;
                         this.queue.splice(this.queue.indexOf(this.nextFloor), 1);
                     }, 3000);
                     clearInterval(timer);
                 } else {
                     if (deltah > 0) {
+                        this.arr[this.column - 1].height -= 2;
                         h -= 2;
                     } else {
+                        this.arr[this.column - 1].height += 2;
                         h += 2;
                     }
                 }
