@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ cabin_relaxation: isRelaxation }" class="cabin cabin_size cabin_position">
+    <div :class="{ cabin_relaxation: arr[this.column - 1].isRelaxation }" class="cabin cabin_size cabin_position">
         <cabinScoreboard
         :arr="arr"
         :column="column"
@@ -45,7 +45,6 @@ export default {
     data() {
         return {
             height: 50,
-            isRelaxation: false,
             nextFloor: 1,
             draw: true,
         }
@@ -84,7 +83,6 @@ export default {
 
                 if (Math.abs(h) >= Math.abs(deltah)) {
                     this.arr[this.column - 1].isRelaxation = true;
-                    this.isRelaxation = true;
                     if (deltah) {
                         this.fakeQueue.splice(this.fakeQueue.indexOf(this.nextFloor), 1);
                     }
@@ -92,7 +90,6 @@ export default {
                     setTimeout(() => {
                         this.arr[this.column - 1].isRelaxation = false;
                         this.arr[this.column - 1].isActive = false;
-                        this.isRelaxation = false;
                         this.queue.splice(this.queue.indexOf(this.nextFloor), 1);
                     }, 3000);
                     clearInterval(timer);
