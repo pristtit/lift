@@ -60,38 +60,18 @@ export default {
 
     watch: {
         startParam() {
-            if (this.column === this.nextColumn + 1) {
-                let h = 0;
-                let deltah = Math.round(this.height / 50 - this.commonNextFloor[0]);
-                this.draw = deltah < 0;
-                this.arr[this.column - 1].floorNumber = this.commonNextFloor[0];
-                this.nextFloor = this.commonNextFloor[0];
-                this.commonNextFloor.shift();
-                
-                let timer = setInterval(() => {
-                    this.$el.style.bottom = String(this.height + h) + 'px';
-
-                    if (Math.abs(h) >= Math.abs(deltah) * 50) {
-                        this.height += h;
-                        this.isRelaxation = true;
-                        this.fakeQueue.splice(this.fakeQueue.indexOf(this.nextFloor), 1);
-
-                        setTimeout(() => {
-                            this.isRelaxation = false;
-                            this.arr[this.column - 1].isActive = false;
-                            this.queue.splice(this.queue.indexOf(this.nextFloor), 1);
-                        }, 3000);
-                        clearInterval(timer);
-                    } else {
-                        if (deltah > 0) {
-                            h -= 2;
-                        } else {
-                            h += 2;
-                        }
-                    }
-                }, 40)
+            if (this.nextColumn + 1) {
+                if (this.column === this.nextColumn + 1) {
+                    this.go();
+                }
+            } else {
+                console.log("piiii");
+                if (this.arr.filter(item => item.isActive).find(item => item.index === this.column - 1)) {
+                    this.go();
+                }
             }
         },
+
 
         // height(newValue) {
         //     sessionStorage.setItem("height", JSON.stringify(newValue));
@@ -109,6 +89,40 @@ export default {
         //     sessionStorage.setItem("draw", JSON.stringify(newValue));
         // },
 
+    },
+
+    methods: {
+        go() {
+            let h = 0;
+            let deltah = Math.round(this.height / 50 - this.commonNextFloor[0]);
+            this.draw = deltah < 0;
+            this.arr[this.column - 1].floorNumber = this.commonNextFloor[0];
+            this.nextFloor = this.commonNextFloor[0];
+            this.commonNextFloor.shift();
+            
+            let timer = setInterval(() => {
+                this.$el.style.bottom = String(this.height + h) + 'px';
+
+                if (Math.abs(h) >= Math.abs(deltah) * 50) {
+                    this.height += h;
+                    this.isRelaxation = true;
+                    this.fakeQueue.splice(this.fakeQueue.indexOf(this.nextFloor), 1);
+
+                    setTimeout(() => {
+                        this.isRelaxation = false;
+                        this.arr[this.column - 1].isActive = false;
+                        this.queue.splice(this.queue.indexOf(this.nextFloor), 1);
+                    }, 3000);
+                    clearInterval(timer);
+                } else {
+                    if (deltah > 0) {
+                        h -= 2;
+                    } else {
+                        h += 2;
+                    }
+                }
+            }, 40)
+        }
     }
 }
 </script>

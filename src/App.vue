@@ -48,7 +48,7 @@ export default {
       queue: [],
       fakeQueue: [],
       arr: [],
-      nextColumn: null,
+      nextColumn: undefined,
       commonNextFloor: [],
       startParam: true,
     }
@@ -72,7 +72,7 @@ export default {
     //   }
     // }
     for (let columnIter = 0; columnIter < this.columns; columnIter++) {
-        this.arr.push({floorNumber: 1, isActive: false});
+        this.arr.push({floorNumber: 1, isActive: false, index: columnIter});
     }
     
     // setInterval(() => {
