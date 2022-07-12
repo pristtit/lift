@@ -19,6 +19,9 @@ export default {
     },
 
     props: {
+        commonNextFloor: {
+            type: Array,
+        },
         nextColumn: {
             type: Number,
         },
@@ -59,12 +62,12 @@ export default {
         startParam() {
             if (this.column === this.nextColumn + 1) {
                 let h = 0;
-                let deltah = Math.round(this.height / 50 - this.queue[0]);
+                let deltah = Math.round(this.height / 50 - this.commonNextFloor[0]);
                 this.draw = deltah < 0;
-                this.arr[this.column - 1].floorNumber = this.queue[0];
-                this.nextFloor = this.queue[0];
-                this.queue.shift();
-
+                this.arr[this.column - 1].floorNumber = this.commonNextFloor[0];
+                this.nextFloor = this.commonNextFloor[0];
+                this.commonNextFloor.shift();
+                
                 let timer = setInterval(() => {
                     this.$el.style.bottom = String(this.height + h) + 'px';
 
@@ -76,6 +79,7 @@ export default {
                         setTimeout(() => {
                             this.isRelaxation = false;
                             this.arr[this.column - 1].isActive = false;
+                            this.queue.splice(this.queue.indexOf(this.nextFloor), 1);
                         }, 3000);
                         clearInterval(timer);
                     } else {

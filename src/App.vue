@@ -5,6 +5,7 @@
       <mineBorder v-for="floor of floors" :key="floor"/>
       
       <cabin 
+      :commonNextFloor="commonNextFloor"
       :startParam="startParam"
       :nextColumn="nextColumn" 
       :column="column"
@@ -42,13 +43,13 @@ export default {
 
   data() {
     return {
-      floors: 5,
-      columns: 1,
+      floors: 7,
+      columns: 3,
       queue: [],
       fakeQueue: [],
       arr: [],
       nextColumn: null,
-      nextFloor: null,
+      commonNextFloor: [],
       startParam: true,
     }
   },
@@ -74,22 +75,35 @@ export default {
         this.arr.push({floorNumber: 1, isActive: false});
     }
     
-    setInterval(() => {
-      if (this.queue.length > 0) {
-        if (this.arr.find(item => item.isActive === false)) {
+    // setInterval(() => {
+    //   if (this.queue.length > 0) {
+    //     if (this.arr.find(item => item.isActive === false)) {
 
-          let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(this.nextFloor - item.floorNumber)}}, this);
+    //       let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(this.nextFloor - item.floorNumber)}}, this);
+    //       listDistance.sort(function(a, b) { return a.distance - b.distance });
+
+    //       this.nextColumn = listDistance.find(item => !item.isActive).id;
+    //       this.arr[this.nextColumn].isActive = true;
+    //       this.startParam = !this.startParam;
+    //     }
+    //   }
+    // }, 30);
+  },
+  
+  watch: {
+    queue: {
+      handler() {
+        if (this.arr.find(item => !item.isActive) && this.commonNextFloor.length > 0) {
+          let listDistance = this.arr.map(function(item, index) { return {isActive: item.isActive, id: index, distance: Math.abs(this.commonNextFloor[0] - item.floorNumber)}}, this);
           listDistance.sort(function(a, b) { return a.distance - b.distance });
 
           this.nextColumn = listDistance.find(item => !item.isActive).id;
           this.arr[this.nextColumn].isActive = true;
           this.startParam = !this.startParam;
-        }
-      }
-    }, 30);
-  },
-  
-  // watch: {
+          }
+      },
+      deep: true
+    }
 
   //   queue: {
   //     handler(newValue) {
@@ -125,13 +139,12 @@ export default {
   //     },
   //     deep: true
   //   },
-  // },
+  },
 
   methods: {
     pushListApp(floor) {
-      this.nextFloor = floor;
-
       if (!this.queue.includes(floor) && !this.arr.find(element => element.floorNumber === floor)) {
+        this.commonNextFloor.push(floor);
         this.queue.push(floor);
         this.fakeQueue.push(floor);
       }
